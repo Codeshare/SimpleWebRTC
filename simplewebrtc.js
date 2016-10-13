@@ -367,13 +367,16 @@ SimpleWebRTC.prototype.getEl = function (idOrEl) {
     }
 };
 
-SimpleWebRTC.prototype.startLocalVideo = function () {
+SimpleWebRTC.prototype.startLocalVideo = function (cb) {
     var self = this;
+    cb = cb || function () {};
     this.webrtc.startLocalMedia(this.config.media, function (err, stream) {
         if (err) {
             self.emit('localMediaError', err);
+            cb(err);
         } else {
             attachMediaStream(stream, self.getLocalVideoContainer(), self.config.localVideo);
+            cb();
         }
     });
 };
